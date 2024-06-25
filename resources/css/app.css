@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-backdrop: #306da7;
+}
+
 [x-cloak] {
     display: none;
+}
+
+.title{
+    filter: drop-shadow(0px 0px 60px var(--color-backdrop));
 }

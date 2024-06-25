@@ -1,22 +1,18 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
+import AppLayout from "@/Layouts/AppLayout.vue";
 </script>
 
 <template>
     <AppLayout title="Dashboard">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
-        </template>
+        <div class="flex flex-col items-center justify-center mt-12">
+            <div
+                class="title text-[3rem] sm:text-[15rem] duration-100 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-400"
+            >
+                <h1>Bright</h1>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome />
-                </div>
+                <h1>Mind</h1>
             </div>
+            <div class="h-[20rem]">asd</div>
         </div>
     </AppLayout>
 </template>
