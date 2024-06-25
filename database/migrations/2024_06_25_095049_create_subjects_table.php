@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->smallInteger('grade');
             $table->text('description')->nullable();
+            $table->string('cover_image')->nullable();
             $table->timestamps();
         });
     }
