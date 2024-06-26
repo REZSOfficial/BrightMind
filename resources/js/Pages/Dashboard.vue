@@ -33,7 +33,7 @@ const props = defineProps({
                     class="grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2 md:grid-cols-3 align-center"
                 >
                     <div
-                        class="flex flex-col justify-between text-center bg-gray-800 border border-gray-700 rounded-lg shadow-md"
+                        class="flex flex-col justify-between overflow-hidden text-center bg-gray-800 border border-gray-700 rounded-lg shadow-md"
                         v-for="subject in props.subjects"
                     >
                         <div class="flex flex-col justify-between h-full p-4">
@@ -64,11 +64,12 @@ const props = defineProps({
                                 </div>
                             </div>
                         </div>
-                        <a
-                            class="p-1 text-lg font-extrabold underline bg-pink-600 rounded-b text-slate-800"
+                        <p
+                            @click="$inertia.get(`/courses/${subject.id}`)"
+                            class="p-1 text-lg font-extrabold text-white bg-pink-600 hover:cursor-pointer"
                         >
                             View
-                        </a>
+                        </p>
                     </div>
                 </div>
             </div>
