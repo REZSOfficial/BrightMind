@@ -10,25 +10,44 @@ const props = defineProps({
 
 const pageNumber = ref(0);
 
+const givenAnswers = ref([]);
+
 const handlePage = (action) => {
+    if (props.course.content[pageNumber.value].data.answers) {
+        props.course.content[pageNumber.value].data.answers.forEach(
+            (answer) => {
+                const currentElement = document.querySelector(`#${answer}`);
+                currentElement.disabled = true;
+            }
+        );
+    }
+
     if (action === "next") {
         pageNumber.value++;
-    } else if (action === "back") {
-        pageNumber.value--;
+    }
+
+    if (action === "results") {
+        pageNumber.value = -1;
     }
 };
 
 const handleAnswer = (answer) => {
-    props.course.content[pageNumber.value].data.answer.forEach((answer) => {
-        const selectedElement = document.querySelector(`#${answer}`);
-        selectedElement.classList.remove("bg-green-500", "hover:bg-green-600");
-        selectedElement.classList.remove("bg-red-500", "hover:bg-red-600");
-    });
     const selectedElement = document.querySelector(`#${answer}`);
+    selectedElement.classList.add("bg-pink-600");
+
     if (props.course.content[pageNumber.value].data.correct === answer) {
-        selectedElement.classList.add("bg-green-500", "hover:bg-green-600");
+        givenAnswers.value.push({
+            pageNumber: pageNumber.value,
+            givenAnswer: answer,
+            correct: true,
+        });
     } else {
-        selectedElement.classList.add("bg-red-500", "hover:bg-red-600");
+        givenAnswers.value.push({
+            pageNumber: pageNumber.value,
+            givenAnswer: answer,
+            correct: false,
+            correctAnswer: props.course.content[pageNumber.value].data.correct,
+        });
     }
 };
 </script>
@@ -55,7 +74,12 @@ const handleAnswer = (answer) => {
                 class="flex flex-col w-full mx-auto text-white bg-gray-800 border border-gray-700 rounded-b-lg shadow-md md:w-1/2 sm:p-4"
             >
                 <!--Learn-->
-                <div v-if="course.content[pageNumber].type === 'text'">
+                <div
+                    v-if="
+                        pageNumber !== -1 &&
+                        course.content[pageNumber].type === 'text'
+                    "
+                >
                     <h1>Learn</h1>
                     <div class="my-3 border-t-2"></div>
                     <div class="text-lg leading-relaxed text-gray-400">
@@ -63,7 +87,12 @@ const handleAnswer = (answer) => {
                     </div>
                 </div>
                 <!--Question-->
-                <div v-else>
+                <div
+                    v-else-if="
+                        pageNumber !== -1 &&
+                        course.content[pageNumber].type === 'question'
+                    "
+                >
                     <h1>
                         Question:
                         <span class="font-bold text-pink-500">{{
@@ -72,14 +101,38 @@ const handleAnswer = (answer) => {
                     </h1>
                     <div class="my-3 border-t-2"></div>
                     <div id="answer-container" class="flex flex-wrap gap-4">
-                        <p
+                        <button
                             @click="handleAnswer(answer)"
                             v-for="answer in course.content[pageNumber].data
                                 .answers"
                             :id="answer"
-                            class="w-full p-2 text-xl font-bold text-center duration-100 border rounded hover:cursor-pointer focus:bg-pink-600 hover:bg-pink-500"
+                            class="w-full p-2 text-xl font-bold text-center duration-100 border rounded hover:cursor-pointer active:bg-pink-600 hover:bg-pink-500"
                         >
                             {{ answer }}
+                        </button>
+                    </div>
+                </div>
+                <!--Results-->
+                <div v-if="pageNumber === -1">
+                    <h1>Results:</h1>
+                    <div class="my-3 border-t-2"></div>
+
+                    <div v-for="answer in givenAnswers" class="flex flex-row">
+                        <p
+                            :class="
+                                answer.correct
+                                    ? 'text-green-500'
+                                    : 'text-red-500'
+                            "
+                        >
+                            {{ answer.pageNumber }}. {{ answer.givenAnswer }}
+                        </p>
+                        <p
+                            class="text-green-500 duration-100 bg-green-500 ms-3 hover:bg-transparent"
+                            v-if="!answer.correct"
+                        >
+                            Correct Answer:
+                            {{ answer.correctAnswer }}
                         </p>
                     </div>
                 </div>
@@ -88,18 +141,19 @@ const handleAnswer = (answer) => {
                     class="flex justify-end mt-3 text-3xl font-bold me-2 gap-x-2"
                 >
                     <button
-                        v-if="pageNumber > 0"
-                        @click="handlePage('back')"
-                        class="px-3 text-pink-500 duration-100 rounded hover:bg-slate-700 active:bg-slate-600"
-                    >
-                        &lt;
-                    </button>
-                    <button
+                        :id="`next-btn-${pageNumber}`"
                         @click="handlePage('next')"
                         v-if="pageNumber < course.content.length - 1"
                         class="px-3 text-pink-500 duration-100 rounded hover:bg-slate-700 active:bg-slate-600"
                     >
                         &gt;
+                    </button>
+                    <button
+                        v-else
+                        @click="handlePage('results')"
+                        class="px-3 text-pink-500 duration-100 border-b-2 border-pink-600 text-md hover:bg-slate-700 active:bg-slate-600"
+                    >
+                        Results
                     </button>
                 </div>
             </div>
