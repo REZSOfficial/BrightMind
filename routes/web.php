@@ -22,4 +22,5 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('/courses/{subject}', [SubjectController::class, 'show'])->name('courses.show');
+    Route::post('/courses/{subject}/answers', [SubjectController::class, 'answers'])->name('courses.answers');
 });

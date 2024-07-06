@@ -10,7 +10,7 @@ const props = defineProps({
     <AppLayout title="Dashboard">
         <div class="flex flex-col items-center justify-center text-white">
             <div
-                class="title text-[3rem] sm:text-[15rem] duration-100 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-400"
+                class="title text-[3rem] leading-tight sm:text-[15rem] duration-100 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-400"
             >
                 <h1>Bright</h1>
 
