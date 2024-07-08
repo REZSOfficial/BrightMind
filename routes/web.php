@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Foundation\Application;
@@ -20,7 +21,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
-    Route::get('/courses/{subject}', [SubjectController::class, 'show'])->name('courses.show');
-    Route::post('/courses/{subject}/answers', [SubjectController::class, 'answers'])->name('courses.answers');
+    Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
+    Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
+    Route::post('/course/{subject}/answers', [CourseController::class, 'answers'])->name('course.answers');
 });

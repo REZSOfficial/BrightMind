@@ -4,6 +4,7 @@
 
 :root {
     --color-backdrop: #306da7;
+    --slate-900: #0f172a;
 }
 
 [x-cloak] {
@@ -12,4 +13,8 @@
 
 .title{
     filter: drop-shadow(0px 0px 60px var(--color-backdrop));
+}
+
+#main-content {
+background: radial-gradient(circle, rgb(246, 126, 255) -200%, rgba(15,23,42,1) 64%);
 }

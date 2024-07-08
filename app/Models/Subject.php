@@ -2,23 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subject extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
-        'user_id',
-        'title',
-        'grade',
-        'description',
-        'cover_image'
+        'title'
     ];
 
-    public function user()
+    public function courses(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Course::class);
     }
 }

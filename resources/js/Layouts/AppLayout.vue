@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { Head, Link, router } from "@inertiajs/vue3";
-import ApplicationMark from "@/Components/ApplicationMark.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
@@ -13,18 +12,6 @@ defineProps({
 
 const showingNavigationDropdown = ref(false);
 
-const switchToTeam = (team) => {
-    router.put(
-        route("current-team.update"),
-        {
-            team_id: team.id,
-        },
-        {
-            preserveState: false,
-        }
-    );
-};
-
 const logout = () => {
     router.post(route("logout"));
 };
@@ -34,7 +21,7 @@ const logout = () => {
     <div>
         <Head :title="title" />
 
-        <div class="min-h-screen bg-slate-900">
+        <div id="main-content" class="min-h-screen">
             <nav class="sticky top-0 z-40 bg-slate-900">
                 <!-- Primary Navigation Menu -->
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -62,10 +49,10 @@ const logout = () => {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="false"
+                                    :href="route('course.create')"
+                                    :active="route().current('course.create')"
                                 >
-                                    Other
+                                    Create Course
                                 </NavLink>
                             </div>
                         </div>
@@ -206,6 +193,12 @@ const logout = () => {
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('course.create')"
+                            :active="route().current('course.create')"
+                        >
+                            Create Course
                         </ResponsiveNavLink>
                     </div>
 

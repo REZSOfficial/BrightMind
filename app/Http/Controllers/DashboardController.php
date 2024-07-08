@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use App\Models\Course;
 use App\Models\Subject;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function show()
     {
-        $subjects = Subject::inRandomOrder()->take(6)->get();
+        $courses = Course::inRandomOrder()->take(6)->get();
 
         return Inertia::render('Dashboard', [
-            'subjects' => $subjects
+            'courses' => $courses
         ]);
     }
 }

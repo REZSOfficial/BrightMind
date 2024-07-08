@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
 use App\Models\Subject;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,6 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->has(Subject::factory(3))->create();
+        $subjects = ['Math', 'Biology', 'Literature', 'Chemistry', 'Geography'];
+
+        foreach ($subjects as $subject) {
+            Subject::firstOrCreate(['title' => $subject]);
+        }
+
+        Course::factory(15)->create();
     }
 }
