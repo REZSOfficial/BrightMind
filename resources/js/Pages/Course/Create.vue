@@ -3,24 +3,32 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { watch } from "vue";
+
+let questionIdCounter = 0;
+
 const props = defineProps({
     subjects: Array,
 });
 
 const inputs = ref([]);
 
+const correctAnswers = ref([]);
+
 const showAdd = ref(false);
 
 const form = useForm({
     subject_id: "1",
     title: "",
-    inputs: inputs.value,
+    grade: 0,
+    content: inputs.value,
+    correctAnswers: correctAnswers.value,
 });
 
 watch(
-    inputs,
-    (newInputs) => {
-        form.inputs = newInputs;
+    [inputs, correctAnswers],
+    ([newInputs, newCorrectAnswers]) => {
+        form.content = newInputs;
+        form.correctAnswers = newCorrectAnswers;
     },
     { deep: true }
 );
@@ -37,18 +45,21 @@ const addInput = (type) => {
     if (type === "text") {
         inputs.value.push({
             type: "text",
-            value: "",
+            data: "",
         });
     } else if (type === "question") {
+        const newQuestionId = questionIdCounter++;
         inputs.value.push({
             type: "question",
-            value: "",
-            answers: [
-                { value: "" },
-                { value: "" },
-                { value: "" },
-                { value: "" },
-            ],
+            data: {
+                id: newQuestionId,
+                question: "",
+                answers: ["", "", "", ""],
+            },
+        });
+        correctAnswers.value.push({
+            questionId: newQuestionId,
+            answer: "",
         });
     }
 };
@@ -94,6 +105,21 @@ const addInput = (type) => {
                         maxlength="64"
                     />
                 </div>
+                <div>
+                    <h1 class="text-pink-500">Grade</h1>
+                    <div class="flex flex-wrap">
+                        <div class="w-1/7 sm:w-1/12" v-for="i in 12">
+                            <p class="font-bold text-pink-500">{{ i }}.</p>
+                            <input
+                                class="p-4 duration-100 border-2 border-pink-500 rounded hover:cursor-pointer drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0 checked:bg-pink-500 focus:bg-pink-500 active:bg-pink-500 hover:bg-pink-500 active:ring-0"
+                                v-model="form.grade"
+                                type="radio"
+                                name="grade"
+                                :value="i"
+                            />
+                        </div>
+                    </div>
+                </div>
                 <div v-for="(input, index) in inputs" :key="index">
                     <div
                         v-if="input.type === 'text'"
@@ -105,7 +131,7 @@ const addInput = (type) => {
                         <textarea
                             class="w-full border-2 border-pink-500 rounded drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0"
                             type="text"
-                            v-model="input.value"
+                            v-model="input.data"
                         />
                     </div>
                     <div
@@ -119,18 +145,34 @@ const addInput = (type) => {
                             maxlength="128"
                             class="w-full border-2 border-pink-500 rounded drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0"
                             type="text"
-                            v-model="input.value"
+                            v-model="input.data.question"
                         />
-                        <div class="flex flex-row w-full mt-2 gap-x-2">
-                            <input
-                                v-for="(answer, ansIndex) in input.answers"
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div
+                                class="flex flex-row"
+                                v-for="(answer, ansIndex) in input.data.answers"
                                 :key="ansIndex"
-                                class="w-1/4 border-2 border-pink-500 rounded drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0"
-                                type="text"
-                                v-model="answer.value"
-                                :placeholder="'Answer ' + (ansIndex + 1)"
-                                maxlength="64"
-                            />
+                            >
+                                <input
+                                    class="w-full border-2 border-pink-500 rounded drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0"
+                                    type="text"
+                                    v-model="input.data.answers[ansIndex]"
+                                    :placeholder="'Answer ' + (ansIndex + 1)"
+                                    maxlength="64"
+                                />
+                                <input
+                                    class="duration-100 border-2 border-pink-500 rounded custom-radio hover:cursor-pointer drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0 checked:bg-pink-500 focus:bg-pink-500 active:bg-pink-500 hover:bg-pink-500 active:ring-0 size-11 ms-2"
+                                    type="radio"
+                                    :name="'question-' + input.data.id"
+                                    v-model="
+                                        correctAnswers.find(
+                                            (ans) =>
+                                                ans.questionId === input.data.id
+                                        ).answer
+                                    "
+                                    :value="answer"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

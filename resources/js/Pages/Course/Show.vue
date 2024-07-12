@@ -105,13 +105,10 @@ const handleAnswer = (answer) => {
 <template>
     <AppLayout :title="course.subject.title">
         <div
-            class="flex flex-col w-full mx-auto text-white bg-gray-800 border border-gray-700 rounded-t-lg shadow-md md:w-2/3 sm:p-4"
+            class="flex flex-row justify-between w-full mx-auto text-white bg-gray-800 border border-gray-700 rounded-t-lg shadow-md md:w-2/3 sm:p-4"
         >
             <h1>
-                <span class="font-extrabold text-pink-500">{{
-                    course.subject.title
-                }}</span>
-                by:
+                <span class="text-gray-500">Creator:</span>
                 {{ course.user.name }}
             </h1>
             <h1 class="text-pink-500">
