@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import InputErrorVue from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { watch } from "vue";
@@ -8,6 +9,7 @@ let questionIdCounter = 0;
 
 const props = defineProps({
     subjects: Array,
+    errors: Object,
 });
 
 const inputs = ref([]);
@@ -63,6 +65,17 @@ const addInput = (type) => {
         });
     }
 };
+
+const setCorrectAnswer = (questionId, answer) => {
+    const correctAnswer = correctAnswers.value.find(
+        (ans) => ans.questionId === questionId
+    );
+    if (correctAnswer) {
+        correctAnswer.answer = answer;
+    } else {
+        correctAnswers.value.push({ questionId, answer });
+    }
+};
 </script>
 
 <template>
@@ -94,6 +107,13 @@ const addInput = (type) => {
                             {{ subject.title }}
                         </option>
                     </select>
+                    <InputErrorVue
+                        :message="
+                            errors.subject_id
+                                ? 'The subject field is required.'
+                                : ''
+                        "
+                    />
                 </div>
                 <div>
                     <h1 class="text-pink-500">Course Title</h1>
@@ -104,6 +124,7 @@ const addInput = (type) => {
                         placeholder="Course Title"
                         maxlength="64"
                     />
+                    <InputErrorVue :message="errors.title" />
                 </div>
                 <div>
                     <h1 class="text-pink-500">Grade</h1>
@@ -119,6 +140,11 @@ const addInput = (type) => {
                             />
                         </div>
                     </div>
+                    <InputErrorVue
+                        :message="
+                            errors.grade ? 'The grade field is required.' : ''
+                        "
+                    />
                 </div>
                 <div v-for="(input, index) in inputs" :key="index">
                     <div
@@ -163,14 +189,9 @@ const addInput = (type) => {
                                 <input
                                     class="duration-100 border-2 border-pink-500 rounded custom-radio hover:cursor-pointer drop-shadow-xl bg-slate-700 focus:border-slate-600 focus:ring-0 checked:bg-pink-500 focus:bg-pink-500 active:bg-pink-500 hover:bg-pink-500 active:ring-0 size-11 ms-2"
                                     type="radio"
-                                    :name="'question-' + input.data.id"
-                                    v-model="
-                                        correctAnswers.find(
-                                            (ans) =>
-                                                ans.questionId === input.data.id
-                                        ).answer
-                                    "
+                                    :name="'question-' + input.id"
                                     :value="answer"
+                                    @change="setCorrectAnswer(input.id, answer)"
                                 />
                             </div>
                         </div>

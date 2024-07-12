@@ -1,7 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import axios from "axios";
 
 const props = defineProps({
@@ -19,26 +18,17 @@ const correctAnswers = ref();
 
 // Check if the content of the current page is a question
 const checkContent = () => {
-    answered.value =
-        props.courseJson.content[pageNumber.value].type !== "question";
+    answered.value = props.courseJson.content[pageNumber.value].type === "text";
 };
 
 checkContent();
 
 // Handle the next and previous buttons
 const handlePage = (action) => {
-    if (props.courseJson.content[pageNumber.value].data.answers) {
-        props.courseJson.content[pageNumber.value].data.answers.forEach(
-            (answer) => {
-                const currentElement = document.querySelector(`#${answer}`);
-                currentElement.disabled = true;
-            }
-        );
-    }
-
     if (action === "next") {
         pageNumber.value++;
         checkContent();
+        nextTick(removeBackgroundColor);
     }
 
     /** Get the correct answers from the API
@@ -50,10 +40,7 @@ const handlePage = (action) => {
      **/
     if (action === "results") {
         axios
-            .post(
-                "/course/" + props.courseJson.subject_id + "/answers",
-                givenAnswers.value
-            )
+            .post("/course/" + props.course.id + "/answers", givenAnswers.value)
             .then((response) => {
                 correctAnswers.value = response.data;
             });
@@ -70,13 +57,7 @@ const handleAnswer = (answer) => {
         (item) => item.id === props.courseJson.content[pageNumber.value].id
     );
 
-    // Remove the background color from the previous answer
-    props.courseJson.content[pageNumber.value].data.answers.forEach(
-        (answer) => {
-            const currentElement = document.querySelector(`#${answer}`);
-            currentElement.classList.remove("bg-pink-600");
-        }
-    );
+    removeBackgroundColor();
 
     // Add the background color to the selected answer
     const selectedElement = document.querySelector(`#${answer}`);
@@ -99,6 +80,16 @@ const handleAnswer = (answer) => {
             },
         ];
     }
+};
+
+// Remove the background color from the previous answer
+const removeBackgroundColor = () => {
+    props.courseJson.content[pageNumber.value].data.answers.forEach(
+        (answer) => {
+            const currentElement = document.querySelector(`#${answer}`);
+            currentElement.classList.remove("bg-pink-600");
+        }
+    );
 };
 </script>
 
@@ -149,8 +140,8 @@ const handleAnswer = (answer) => {
                 <div id="answer-container" class="flex flex-wrap gap-4">
                     <button
                         @click="handleAnswer(answer)"
-                        v-for="answer in courseJson.content[pageNumber].data
-                            .answers"
+                        v-for="(answer, index) in courseJson.content[pageNumber]
+                            .data.answers"
                         :id="answer"
                         class="w-full p-2 text-xl font-bold text-center duration-100 border rounded hover:cursor-pointer active:bg-pink-600 hover:bg-pink-500"
                     >
