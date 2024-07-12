@@ -13,7 +13,7 @@ class CourseController extends Controller
 {
     public function show(Course $course)
     {
-        $course_json = json_decode(Storage::get('/public/courses/1.json'), true);
+        $course_json = json_decode(Storage::get('/public/courses/18.json'), true);
         $course->load('subject', 'user');
 
         return Inertia::render('Course/Show', [
@@ -24,7 +24,7 @@ class CourseController extends Controller
 
     public function answers(Subject $subject, Request $request)
     {
-        $answers = json_decode(Storage::get('/public/courses/1.json'), true);
+        $answers = json_decode(Storage::get('/public/courses/18.json'), true);
         $answers = $answers['correctAnswers'];
 
         $given_answers = $request->all();
@@ -52,7 +52,6 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         $subject = Subject::find($request->subject_id);
         $course = Course::create([
             'user_id' => Auth::user()->id,

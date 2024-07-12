@@ -51,8 +51,8 @@ const addInput = (type) => {
         const newQuestionId = questionIdCounter++;
         inputs.value.push({
             type: "question",
+            id: newQuestionId,
             data: {
-                id: newQuestionId,
                 question: "",
                 answers: ["", "", "", ""],
             },
