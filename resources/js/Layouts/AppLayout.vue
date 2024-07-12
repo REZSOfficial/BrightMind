@@ -21,7 +21,10 @@ const logout = () => {
     <div>
         <Head :title="title" />
 
-        <div id="main-content" class="min-h-screen">
+        <div
+            id="main-content"
+            class="flex flex-col justify-between min-h-screen"
+        >
             <nav class="sticky top-0 z-40 bg-slate-900">
                 <!-- Primary Navigation Menu -->
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -258,7 +261,7 @@ const logout = () => {
 
             <footer>
                 <svg
-                    class="-mb-4 duration-200 ease-in-out"
+                    class="-mb-4 duration-200 ease-in-out sm:-mb-8 md:-mb-12 lg:-mb-16"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 1440 320"
                 >

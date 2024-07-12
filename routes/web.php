@@ -25,5 +25,5 @@ Route::middleware([
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
     Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
-    Route::post('/course/{subject}/answers', [CourseController::class, 'answers'])->name('course.answers');
+    Route::post('/course/{course}/answers', [CourseController::class, 'answers'])->name('course.answers');
 });
