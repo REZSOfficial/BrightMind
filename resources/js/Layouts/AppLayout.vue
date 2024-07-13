@@ -124,6 +124,12 @@ const logout = () => {
                                             Profile
                                         </DropdownLink>
 
+                                        <DropdownLink
+                                            :href="route('profile.courses')"
+                                        >
+                                            My Courses
+                                        </DropdownLink>
+
                                         <div
                                             class="border-2 border-t border-slate-900"
                                         />
@@ -241,6 +247,12 @@ const logout = () => {
                                 :active="route().current('profile.show')"
                             >
                                 Profile
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('profile.courses')"
+                                :active="route().current('profile.courses')"
+                            >
+                                My Courses
                             </ResponsiveNavLink>
 
                             <!-- Authentication -->

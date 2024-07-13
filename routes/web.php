@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,4 +27,6 @@ Route::middleware([
     Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
     Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
     Route::post('/course/{course}/answers', [CourseController::class, 'answers'])->name('course.answers');
+
+    Route::get('/profile/courses', [UserController::class, 'courses'])->name('profile.courses');
 });
