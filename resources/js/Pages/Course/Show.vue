@@ -16,7 +16,9 @@ const answered = ref(false);
 
 const correctAnswers = ref();
 
-let correctAmount = ref(0);
+const blurred = ref(true);
+
+const correctAmount = ref(0);
 
 // Check if the content of the current page is a question
 const checkContent = () => {
@@ -88,12 +90,14 @@ const handleAnswer = (answer) => {
 
 // Remove the background color from the previous answer
 const removeBackgroundColor = () => {
-    props.courseJson.content[pageNumber.value].data.answers.forEach(
-        (answer) => {
-            const currentElement = document.querySelector(`#${answer}`);
-            currentElement.classList.remove("bg-pink-600");
-        }
-    );
+    if (props.courseJson.content[pageNumber.value].type === "question") {
+        props.courseJson.content[pageNumber.value].data.answers.forEach(
+            (answer) => {
+                const currentElement = document.querySelector(`#${answer}`);
+                currentElement.classList.remove("bg-pink-600");
+            }
+        );
+    }
 };
 
 // Get correct answer amount
@@ -164,23 +168,32 @@ const getCorrectAmount = () => {
             <div v-if="pageNumber === -1">
                 <h1>Results:</h1>
                 <div class="my-3 border-t-2"></div>
-                <div
-                    v-for="answer in correctAnswers"
-                    class="flex flex-row flex-wrap mt-2"
-                >
-                    <p
-                        :class="
-                            answer.correct ? 'text-green-500' : 'text-red-500'
-                        "
+                <div class="flex flex-col w-1/2 text-xl gap-y-4">
+                    <div
+                        v-for="answer in correctAnswers"
+                        class="flex flex-row flex-wrap justify-between mt-2 gap-x-4"
                     >
-                        {{ answer.id }}. {{ answer.givenAnswer }}
-                    </p>
-                    <p
-                        class="text-green-500 duration-100 bg-green-500 rounded ms-3 hover:bg-transparent"
-                        v-if="!answer.correct"
-                    >
-                        {{ answer.correctAnswer }}
-                    </p>
+                        <p
+                            :class="
+                                answer.correct
+                                    ? 'text-green-500'
+                                    : 'text-red-500'
+                            "
+                        >
+                            {{ answer.id }}. {{ answer.givenAnswer }}
+                        </p>
+
+                        <p
+                            :class="
+                                blurred
+                                    ? 'blurred duration-200'
+                                    : 'text-green-500 duration-200'
+                            "
+                            v-if="!answer.correct"
+                        >
+                            {{ answer.correctAnswer }}
+                        </p>
+                    </div>
                 </div>
                 <div class="mt-4">
                     <div>
@@ -193,7 +206,7 @@ const getCorrectAmount = () => {
                             givenAnswers.length
                         }}</span>
                     </div>
-                    <div>
+                    <div class="flex justify-between">
                         <span class="text-lg font-bold text-pink-500"
                             >{{
                                 Math.round(
@@ -201,6 +214,14 @@ const getCorrectAmount = () => {
                                 ) * 100
                             }}%</span
                         >
+                        <div>
+                            <button
+                                class="px-3 text-lg text-pink-500 duration-100 border-b-2 border-pink-600 text-md hover:bg-slate-700 active:bg-slate-600"
+                                @click="blurred = !blurred"
+                            >
+                                Show / Hide
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

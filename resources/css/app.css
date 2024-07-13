@@ -18,3 +18,15 @@
 #main-content {
 background: radial-gradient(circle, rgb(246, 126, 255) -200%, rgba(15,23,42,1) 64%);
 }
+
+.blurred{
+    color: transparent;
+    text-shadow: 0 0 8px #22c55e;
+}
+
+.blurred:hover{
+    cursor: pointer;
+    color: #22c55e;
+    text-shadow: 0 0 0px;
+    transition-duration: 200ms;
+}
