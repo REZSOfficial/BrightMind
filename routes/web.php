@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +28,8 @@ Route::middleware([
     Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
     Route::post('/course/{course}/answers', [CourseController::class, 'answers'])->name('course.answers');
     Route::get('/profile/courses', [UserController::class, 'courses'])->name('profile.courses');
+});
+
+Route::fallback(function () {
+    Inertia::render('Error', ['message' => 'Page not found.']);
 });

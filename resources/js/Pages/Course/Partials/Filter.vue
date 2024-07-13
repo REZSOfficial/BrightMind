@@ -5,8 +5,8 @@ const props = defineProps({
     subjects: Array,
 });
 
-const filterSubject = ref(-1);
-const filterGrade = ref(-1);
+const filterSubject = ref(null);
+const filterGrade = ref(null);
 </script>
 
 <template>

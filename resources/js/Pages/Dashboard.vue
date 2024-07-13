@@ -28,15 +28,12 @@ const props = defineProps({
                 learning journey today.
             </div>
 
-            <div class="w-full px-0 mt-24 sm:px-8">
+            <div class="px-0 mt-24 sm:w-full sm:px-8">
                 <h1 class="mb-4 text-2xl font-bold">Explore Courses</h1>
                 <div
-                    class="grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2 md:grid-cols-3 align-center"
+                    class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 align-center"
                 >
-                    <div
-                        class="flex flex-col justify-between overflow-hidden text-center bg-gray-800 border border-gray-700 rounded-lg shadow-md"
-                        v-for="course in props.courses"
-                    >
+                    <div v-for="course in props.courses">
                         <CoursePreview :course="course"></CoursePreview>
                     </div>
                 </div>

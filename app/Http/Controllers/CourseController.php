@@ -82,10 +82,21 @@ class CourseController extends Controller
         Storage::put($file_name, json_encode($request->all()));
     }
 
-    public function browse()
+    public function browse(Request $request)
     {
-        $courses = Course::paginate(10);
         $subjects = Subject::all();
+        $query = Course::query();
+
+        if ($request->has('subject')) {
+            $query->where('subject_id', $request->subject);
+        }
+
+        if ($request->has('grade')) {
+            $query->where('grade', $request->grade);
+        }
+
+        $courses = $query->with('subject')->paginate(10);
+
         return Inertia::render('Course/Browse', [
             'courses' => $courses,
             'subjects' => $subjects

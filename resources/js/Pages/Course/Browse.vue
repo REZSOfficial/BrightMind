@@ -15,17 +15,44 @@ const getCourses = (url) => {
 };
 
 const filterCourses = (event, filterSubject, filterGrade) => {
-    router.get(
-        route("course.browse"),
-        {
-            subject: filterSubject,
-            grade: filterGrade,
-        },
-        {
-            replace: true,
-            preserveState: true,
-        }
-    );
+    if (filterSubject == null && filterGrade == null) {
+        return;
+    }
+    if (filterSubject && filterGrade) {
+        router.get(
+            route("course.browse"),
+            {
+                subject: filterSubject,
+                grade: parseInt(filterGrade + 1),
+            },
+            {
+                replace: true,
+                preserveState: true,
+            }
+        );
+    } else if (filterSubject) {
+        router.get(
+            route("course.browse"),
+            {
+                subject: filterSubject,
+            },
+            {
+                replace: true,
+                preserveState: true,
+            }
+        );
+    } else if (filterGrade) {
+        router.get(
+            route("course.browse"),
+            {
+                grade: parseInt(filterGrade + 1),
+            },
+            {
+                replace: true,
+                preserveState: true,
+            }
+        );
+    }
 };
 </script>
 
@@ -37,7 +64,9 @@ const filterCourses = (event, filterSubject, filterGrade) => {
                 class="mb-8"
                 @filter="filterCourses"
             ></Filter>
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+            <div
+                class="grid w-[95%] md:w-[100%] grid-cols-1 gap-6 mx-auto sm:grid-cols-2 md:grid-cols-3"
+            >
                 <div v-for="course in courses.data" :key="course.id">
                     <CoursePreview :course="course" />
                 </div>

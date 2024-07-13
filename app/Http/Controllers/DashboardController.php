@@ -12,6 +12,7 @@ class DashboardController extends Controller
     public function show()
     {
         $courses = Course::inRandomOrder()->take(6)->get();
+        $courses->load('subject');
 
         return Inertia::render('Dashboard', [
             'courses' => $courses
