@@ -52,6 +52,12 @@ const logout = () => {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
+                                    :href="route('course.browse')"
+                                    :active="route().current('course.browse')"
+                                >
+                                    Browse Courses
+                                </NavLink>
+                                <NavLink
                                     :href="route('course.create')"
                                     :active="route().current('course.create')"
                                 >
@@ -202,6 +208,12 @@ const logout = () => {
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('course.browse')"
+                            :active="route().current('course.browse')"
+                        >
+                            Browse Courses
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('course.create')"

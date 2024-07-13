@@ -6,7 +6,7 @@ const props = defineProps({
 
 <template>
     <div
-        class="flex flex-col justify-between overflow-hidden text-center bg-gray-800 border border-gray-700 rounded-lg shadow-md drop-shadow-xl"
+        class="flex flex-col justify-between overflow-hidden text-center border border-gray-700 rounded-lg shadow-md bg-gradient-to-r from-gray-800 to-gray-700 drop-shadow-xl"
     >
         <div class="flex flex-col justify-between h-full p-4">
             <div>

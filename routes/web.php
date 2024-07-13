@@ -22,11 +22,11 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/course/browse', [CourseController::class, 'browse'])->name('course.browse');
     Route::get('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
     Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
     Route::post('/course/{course}/answers', [CourseController::class, 'answers'])->name('course.answers');
-
     Route::get('/profile/courses', [UserController::class, 'courses'])->name('profile.courses');
 });

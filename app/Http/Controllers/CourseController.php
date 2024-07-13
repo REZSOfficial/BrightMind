@@ -81,4 +81,14 @@ class CourseController extends Controller
 
         Storage::put($file_name, json_encode($request->all()));
     }
+
+    public function browse()
+    {
+        $courses = Course::paginate(10);
+        $subjects = Subject::all();
+        return Inertia::render('Course/Browse', [
+            'courses' => $courses,
+            'subjects' => $subjects
+        ]);
+    }
 }
