@@ -16,6 +16,8 @@ const answered = ref(false);
 
 const correctAnswers = ref();
 
+let correctAmount = ref(0);
+
 // Check if the content of the current page is a question
 const checkContent = () => {
     answered.value = props.courseJson.content[pageNumber.value].type === "text";
@@ -43,6 +45,9 @@ const handlePage = (action) => {
             .post("/course/" + props.course.id + "/answers", givenAnswers.value)
             .then((response) => {
                 correctAnswers.value = response.data;
+            })
+            .then(() => {
+                getCorrectAmount();
             });
 
         pageNumber.value = -1;
@@ -76,7 +81,6 @@ const handleAnswer = (answer) => {
             {
                 id: props.courseJson.content[pageNumber.value].id,
                 givenAnswer: answer,
-                correctAnswer: "",
             },
         ];
     }
@@ -90,6 +94,13 @@ const removeBackgroundColor = () => {
             currentElement.classList.remove("bg-pink-600");
         }
     );
+};
+
+// Get correct answer amount
+const getCorrectAmount = () => {
+    correctAmount.value = correctAnswers.value.filter(
+        (answer) => answer.givenAnswer === answer.correctAnswer
+    ).length;
 };
 </script>
 
@@ -175,7 +186,7 @@ const removeBackgroundColor = () => {
                     <div>
                         Result:
                         <span class="text-lg font-bold text-green-500">{{
-                            givenAnswers.filter((a) => a.correct).length
+                            correctAmount
                         }}</span>
                         out of
                         <span class="text-lg font-bold text-pink-500">{{
@@ -186,11 +197,8 @@ const removeBackgroundColor = () => {
                         <span class="text-lg font-bold text-pink-500"
                             >{{
                                 Math.round(
-                                    (givenAnswers.filter((a) => a.correct)
-                                        .length /
-                                        givenAnswers.length) *
-                                        100
-                                )
+                                    correctAmount / givenAnswers.length
+                                ) * 100
                             }}%</span
                         >
                     </div>
