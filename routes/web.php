@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::post('/favourite/{course}/store', [FavouriteController::class, 'store'])->name('favourite.store');
     Route::get('/course/browse', [CourseController::class, 'browse'])->name('course.browse');
     Route::get('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');

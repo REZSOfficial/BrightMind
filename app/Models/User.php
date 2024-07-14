@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Course;
 use App\Models\Subject;
+use App\Models\Favourite;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
@@ -70,5 +71,10 @@ class User extends Authenticatable
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function favourites(): HasMany
+    {
+        return $this->hasMany(Favourite::class);
     }
 }

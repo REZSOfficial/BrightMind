@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCourseRequest;
 use Inertia\Inertia;
 use App\Models\Course;
 use App\Models\Subject;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Favourite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreCourseRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CourseController extends Controller
 {
@@ -96,6 +97,10 @@ class CourseController extends Controller
         }
 
         $courses = $query->with('subject')->paginate(10);
+
+        foreach ($courses as $course) {
+            $course->is_favourite = Favourite::where('user_id', Auth::user()->id)->where('course_id', $course->id)->exists();
+        }
 
         return Inertia::render('Course/Browse', [
             'courses' => $courses,
