@@ -67,7 +67,7 @@ const handleAnswer = (answer) => {
     removeBackgroundColor();
 
     // Add the background color to the selected answer
-    const selectedElement = document.querySelector(`#${answer}`);
+    const selectedElement = document.querySelector(`#answer-${answer}`);
     selectedElement.classList.add("bg-pink-600");
 
     // If the answer already exists, update it
@@ -93,7 +93,9 @@ const removeBackgroundColor = () => {
     if (props.courseJson.content[pageNumber.value].type === "question") {
         props.courseJson.content[pageNumber.value].data.answers.forEach(
             (answer) => {
-                const currentElement = document.querySelector(`#${answer}`);
+                const currentElement = document.querySelector(
+                    `#answer-${answer}`
+                );
                 currentElement.classList.remove("bg-pink-600");
             }
         );
@@ -157,7 +159,7 @@ const getCorrectAmount = () => {
                         @click="handleAnswer(answer)"
                         v-for="(answer, index) in courseJson.content[pageNumber]
                             .data.answers"
-                        :id="answer"
+                        :id="'answer-' + answer"
                         class="w-full p-2 text-xl font-bold text-center duration-100 border rounded hover:cursor-pointer active:bg-pink-600 hover:bg-pink-500"
                     >
                         {{ answer }}
