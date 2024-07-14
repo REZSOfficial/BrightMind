@@ -182,7 +182,10 @@ const getCorrectAmount = () => {
                                     : 'text-red-500'
                             "
                         >
-                            {{ answer.id }}. {{ answer.givenAnswer }}
+                            <span class="text-pink-500"
+                                >Question {{ answer.id + 1 }}.)</span
+                            >&nbsp;
+                            {{ answer.givenAnswer }}
                         </p>
 
                         <p

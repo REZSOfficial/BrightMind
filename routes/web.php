@@ -30,6 +30,7 @@ Route::middleware([
     Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
     Route::post('/course/{course}/answers', [CourseController::class, 'answers'])->name('course.answers');
     Route::get('/profile/courses', [UserController::class, 'courses'])->name('profile.courses');
+    Route::get('/profile/favourites', [UserController::class, 'favourites'])->name('profile.favourites');
 });
 
 Route::fallback(function () {
