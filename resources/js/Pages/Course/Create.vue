@@ -18,6 +18,8 @@ const correctAnswers = ref([]);
 
 const showAdd = ref(false);
 
+const inputErrors = ref({});
+
 const form = useForm({
     subject_id: "1",
     title: "",
@@ -36,10 +38,41 @@ watch(
 );
 
 const handleSubmit = () => {
+    checkInputs();
     form.post(route("course.store"), {
         onSuccess: () => {
             form.reset();
         },
+    });
+};
+
+const checkInputs = () => {
+    inputErrors.value = {};
+    form.content.forEach((element) => {
+        if (element.type === "question") {
+            if (element.data.question === "") {
+                inputErrors.value.question = "Question cannot be empty.";
+                return;
+            }
+            element.data.answers.forEach((answer) => {
+                if (answer === "") {
+                    inputErrors.value.answer = "Answer cannot be empty.";
+                    return;
+                }
+            });
+        } else if (element.type === "text") {
+            if (element.data === "") {
+                inputErrors.value.text = "Text cannot be empty.";
+                return;
+            }
+        }
+    });
+
+    form.correctAnswers.forEach((element) => {
+        if (element.answer === "") {
+            inputErrors.value.correctAnswer = "Set a correct answer.";
+            return;
+        }
     });
 };
 
@@ -88,6 +121,16 @@ const setCorrectAnswer = (questionId, answer) => {
         <div
             class="flex flex-col w-full mx-auto text-white bg-gray-800 border border-gray-700 rounded-b-lg shadow-md md:w-2/3 sm:p-4"
         >
+            <div class="flex flex-col mb-2 text-sm text-red-600">
+                <h2 v-if="inputErrors.question">
+                    {{ inputErrors.question }}
+                </h2>
+                <h2 v-if="inputErrors.text">{{ inputErrors.text }}</h2>
+                <h2 v-if="inputErrors.correctAnswer">
+                    {{ inputErrors.correctAnswer }}
+                </h2>
+                <h2 v-if="inputErrors.answer">{{ inputErrors.answer }}</h2>
+            </div>
             <form
                 class="flex flex-col w-full gap-y-4"
                 @submit.prevent="handleSubmit"
