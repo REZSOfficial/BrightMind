@@ -23,7 +23,7 @@ const filterCourses = (event, filterSubject, filterGrade) => {
             route("course.browse"),
             {
                 subject: filterSubject,
-                grade: parseInt(filterGrade + 1),
+                grade: filterGrade,
             },
             {
                 replace: true,
@@ -45,7 +45,7 @@ const filterCourses = (event, filterSubject, filterGrade) => {
         router.get(
             route("course.browse"),
             {
-                grade: parseInt(filterGrade + 1),
+                grade: filterGrade,
             },
             {
                 replace: true,

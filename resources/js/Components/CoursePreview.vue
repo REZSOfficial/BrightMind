@@ -1,11 +1,31 @@
 <script setup>
-import { Link } from "@inertiajs/vue3";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
+import { ref } from "vue";
+
 const props = defineProps({
     course: Object,
 });
+
+const showError = ref(false);
+
+const toggleFavourite = async () => {
+    try {
+        // Make the POST request to toggle the favourite status
+        const response = await axios.post(
+            `/favourite/${props.course.id}/store`
+        );
+
+        // If the request was successful, toggle the is_favourite status
+        if (response.status === 200) {
+            props.course.is_favourite = !props.course.is_favourite;
+        }
+        showError.value = false;
+    } catch (error) {
+        showError.value = true;
+    }
+};
 </script>
 
 <template>
@@ -21,12 +41,14 @@ const props = defineProps({
                 />
                 <FontAwesomeIcon
                     class="text-2xl text-pink-500 duration-150 hover:scale-125"
-                    @click="$inertia.post(`/favourite/${course.id}/store`)"
+                    @click="toggleFavourite"
                     :icon="course.is_favourite ? fas.faHeart : faHeart"
                 />
             </div>
+            <div v-show="showError" class="absolute">
+                <p class="text-sm text-red-500">Something went wrong</p>
+            </div>
             <div>
-                <p class="mt-7">{{ course.description }}</p>
                 <div class="flex flex-col justify-between mt-4 sm:flex-row">
                     <p class="text-lg text-slate-400">
                         Subject:
@@ -37,7 +59,7 @@ const props = defineProps({
                     <p class="text-lg text-slate-400">
                         Grade:
                         <span class="font-extrabold text-pink-400">{{
-                            course.grade + 1
+                            course.grade
                         }}</span>
                     </p>
                 </div>
