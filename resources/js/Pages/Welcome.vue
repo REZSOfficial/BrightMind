@@ -37,16 +37,16 @@ function handleImageError() {
 
             <h1>Mind</h1>
         </div>
-        <div class="flex py-4 bg-pink-600">
+        <div class="text-3xl bg-pink-600">
             <Link
                 v-if="$page.props.auth.user"
                 :href="route('dashboard')"
-                class="p-4 px-6 font-bold duration-150 text-slate-900 hover:text-pink-500 drop-shadow-2xl hover:bg-slate-900"
+                class="flex p-4 px-6 font-bold duration-150 text-slate-900 hover:text-pink-500 drop-shadow-2xl hover:bg-slate-900"
             >
                 Dashboard
             </Link>
 
-            <div v-else class="text-3xl">
+            <div v-else class="flex">
                 <Link
                     :href="route('login')"
                     class="p-4 px-6 font-bold duration-150 text-slate-900 hover:text-pink-500 drop-shadow-2xl hover:bg-slate-900"

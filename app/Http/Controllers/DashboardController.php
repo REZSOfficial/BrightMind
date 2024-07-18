@@ -11,6 +11,7 @@ class DashboardController extends Controller
 {
     public function show()
     {
+        // Get 6 random courses
         $courses = Course::inRandomOrder()->take(6)->get();
         $courses->load('subject');
 

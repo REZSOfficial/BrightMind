@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourseRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CourseController extends Controller
 {
@@ -20,7 +19,7 @@ class CourseController extends Controller
             // Load the course JSON from storage
             $course_json = json_decode(Storage::get('/public/courses/' . $course->id . '.json'), true);
             if (!$course_json) {
-                return Inertia::render('Error', ['message' => 'Course not found or could not be loaded.']);
+                return Inertia::render('Error', ['message' => 'Course not found or could not be loaded. (This course does not exists, as its coming from the seeder, please create a course to be able to view.)']);
             }
 
             // Load related models
@@ -33,17 +32,19 @@ class CourseController extends Controller
             ]);
         } catch (\Exception $e) {
             // Handle the case where the course does not exist or other errors
-            return Inertia::render('Error', ['message' => 'Course not found or could not be loaded.']);
+            return Inertia::render('Error', ['message' => 'Course not found or could not be loaded. (This course does not exists, as its coming from the seeder, please create a course to be able to view.)']);
         }
     }
 
     public function answers(Course $course, Request $request)
     {
+        // Get correct answers from storage
         $answers = json_decode(Storage::get('/public/courses/' . $course->id . '.json'), true);
         $answers = $answers['correctAnswers'];
 
         $given_answers = $request->all();
 
+        // Add correct answer to each given answer
         foreach ($given_answers as &$given_answer) {
             foreach ($answers as $correct_answer) {
                 if ($given_answer["id"] === $correct_answer["questionId"]) {

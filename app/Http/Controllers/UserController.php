@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /**
+     * Retrieves the courses associated with the authenticated user.
+     *
+     * @return \Inertia\Response
+     */
     public function courses()
     {
         $user = User::find(Auth::user()->id);
@@ -25,6 +30,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Retrieves the user's favorite courses and marks them as favorites.
+     *
+     * @return \Inertia\Response
+     */
     public function favourites()
     {
         $user = User::find(Auth::user()->id);
