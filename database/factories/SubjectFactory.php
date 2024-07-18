@@ -17,13 +17,6 @@ class SubjectFactory extends Factory
      */
     public function definition(): array
     {
-        /*
-        $subjects = ['Math', 'Biology', 'Literature', 'Chemistry', 'Geography'];
-
-        return [
-            'title' => $this->faker->unique()->randomElement($subjects),
-        ];
-        */
         return [];
     }
 }

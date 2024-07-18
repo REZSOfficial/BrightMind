@@ -35,7 +35,7 @@ const toggleFavourite = async () => {
         <div class="flex flex-col justify-between h-full p-4">
             <div class="flex flex-row justify-between">
                 <img
-                    :src="`/storage/images/${course.cover_image}`"
+                    :src="`/images/${course.cover_image}`"
                     alt=""
                     class="w-20 h-20 mx-auto translate-x-4"
                 />
