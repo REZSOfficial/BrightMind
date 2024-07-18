@@ -1,12 +1,14 @@
 <?php
 
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavouriteController;
-use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,7 +26,7 @@ Route::middleware([
 ])->group(function () {
     Route::post('/favourite/{course}/store', [FavouriteController::class, 'store'])->name('favourite.store');
     Route::get('/course/browse', [CourseController::class, 'browse'])->name('course.browse');
-    Route::get('/course/create', [CourseController::class, 'create'])->name('course.create');
+    Route::get('/course/create', [CourseController::class, 'create'])->name('course.create')->middleware([RoleMiddleware::class]);
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
     Route::post('/course/store', [CourseController::class, 'store'])->name('course.store');
@@ -33,6 +35,6 @@ Route::middleware([
     Route::get('/profile/favourites', [UserController::class, 'favourites'])->name('profile.favourites');
 });
 
-Route::fallback(function () {
-    Inertia::render('Error', ['message' => 'Page not found.']);
+Route::get('/error', function (Request $request) {
+    return Inertia::render('Error');
 });

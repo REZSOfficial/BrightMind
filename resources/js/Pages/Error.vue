@@ -2,7 +2,10 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 const props = defineProps({
-    message: String,
+    message: {
+        type: String,
+        default: "Register as a teacher to create a course.",
+    },
 });
 </script>
 

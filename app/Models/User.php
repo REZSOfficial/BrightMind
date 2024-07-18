@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Favourite::class);
     }
+
+    public function role()
+    {
+        return $this->role;
+    }
 }
