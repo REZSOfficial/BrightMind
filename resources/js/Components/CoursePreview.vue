@@ -30,7 +30,7 @@ const toggleFavourite = async () => {
 
 <template>
     <div
-        class="flex flex-col justify-between overflow-hidden text-center duration-100 border border-gray-700 rounded-lg shadow-md hover:cursor-pointer sm:hover:transform sm:hover:scale-105 bg-gradient-to-r from-gray-800 to-gray-700 drop-shadow-xl"
+        class="flex flex-col justify-between overflow-hidden text-center duration-100 ease-in-out border border-gray-700 rounded-lg shadow-md hover:cursor-pointer sm:hover:transform sm:hover:scale-105 bg-gradient-to-r from-gray-800 to-gray-700 drop-shadow-xl"
     >
         <div class="flex flex-col justify-between h-full p-4">
             <div class="flex flex-row justify-between">

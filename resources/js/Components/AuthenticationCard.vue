@@ -1,10 +1,16 @@
 <template>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div>
+    <div
+        class="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-slate-900"
+    >
+        <h1
+            class="font-bold text-transparent text-md sm:text-3xl bg-clip-text bg-gradient-to-r from-pink-500 to-violet-400"
+        >
+            BrightMind
+        </h1>
+        <div
+            class="flex flex-col w-full px-6 py-4 mt-6 overflow-hidden bg-gradient-to-t from-pink-500 to-violet-400 sm:max-w-md drop-shadow-2xl"
+        >
             <slot name="logo" />
-        </div>
-
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <slot />
         </div>
     </div>
